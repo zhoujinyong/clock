@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>时钟</title>
+		<script src="js/jquery.js"></script>
+	</head>
+	<body>
+		<canvas id="canvas" width="300" height="300"></canvas>
+		<style>
+			#canvas{
+				/*border: 1px solid red;*/
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				margin: auto;
+			}
+		</style>
+		<script>		
+/////////////				shizhong/
+		var canvas=$("#canvas").get(0);
+		var ctx1=canvas.getContext('2d');
+		function clock(){			
+			ctx1.clearRect(0,0,300,300)
+			ctx1.save();
+			ctx1.translate(150,150);
+			//时钟刻度
+			for(var i=0;i<60;i++){				
+				ctx1.beginPath();
+				var r=Math.floor(Math.random()*255);
+				var g=Math.floor(Math.random()*255);
+				var b=Math.floor(Math.random()*255);
+				var a=1;
+				if(i%5===0){
+					ctx1.moveTo(0,-80);
+				}else{
+					ctx1.moveTo(0,-87);
+				}								
+				ctx1.lineTo(0,-98);
+				ctx1.rotate(Math.PI/30);
+				ctx1.strokeStyle="rgba("+r+","+g+","+b+","+a+")";
+//				console.log("rgba("+r+","+g+","+b+","+a+")")				
+				ctx1.closePath()
+				ctx1.stroke();
+			}	
+				//表盘
+				ctx1.beginPath();
+				ctx1.moveTo(100,0);
+				ctx1.arc(0,0,100,0,Math.PI*2);
+				ctx1.fillStyle="rgba(231,121,14,0.6)";
+				ctx1.fill()
+				
+				var img=new Image();
+					img.src="img/2016-09-28_225539.png";
+						ctx1.drawImage(img,-35,-40);
+				var img1=new Image();
+					img1.src="img/2016-09-28_225646.png";
+						ctx1.drawImage(img1,-20,40);
+				ctx1.font = "22px serif";
+				ctx1.fillStyle="rgba(75,75,75,1)";
+				for(var i=1;i<13;i++){
+				ctx1.rotate(Math.PI/6)
+				ctx1.fillText(i,-7, -60);
+				}
+  				
+				ctx1.restore()
+				////秒针///////
+				var date=new Date();
+				var s=date.getSeconds();
+				var m=date.getMinutes();
+				var h=date.getHours()
+				
+					ctx1.save();
+					ctx1.translate(150,150);
+					ctx1.rotate(2*Math.PI*s/60)
+					ctx1.beginPath();
+					ctx1.moveTo(0,10);
+					ctx1.lineTo(0,25)
+					ctx1.moveTo(10,0);
+					ctx1.arc(0,0,10,0,Math.PI*2);
+					ctx1.moveTo(0,-10);
+					ctx1.lineTo(0,-85)
+					ctx1.strokeStyle="red";
+					ctx1.closePath();
+					ctx1.stroke();
+					ctx1.restore()
+//				fenzheng
+					ctx1.save();
+					ctx1.translate(150,150);
+					ctx1.rotate(2*Math.PI*(m*60+s)/3600)
+					ctx1.beginPath();
+					ctx1.moveTo(8,0);
+					ctx1.arc(0,0,8,0,Math.PI*2);
+					ctx1.fillStyle="rgba(40,40,40,0.8)"
+					ctx1.fill()
+					
+					ctx1.beginPath();
+					ctx1.moveTo(0,8);
+					ctx1.lineTo(0,15);
+					ctx1.moveTo(0,-8);
+					ctx1.lineTo(0,-55);
+					ctx1.lineWidth=2;
+					ctx1.lineCap="round"
+					ctx1.closePath();
+					ctx1.stroke();
+					ctx1.restore()
+					
+					//时针
+					ctx1.save();
+					ctx1.translate(150,150);
+					if(h>=12){
+						h=h-12
+					}
+					ctx1.rotate(2*Math.PI*((h*60+m)*60+s)/(3600*12))
+					ctx1.beginPath();
+					ctx1.moveTo(5,0);
+					ctx1.arc(0,0,5,0,Math.PI*2);
+					ctx1.fill();
+					ctx1.beginPath();
+					ctx1.moveTo(0,5);
+					ctx1.lineTo(0,10)
+					ctx1.moveTo(0,-5);
+					ctx1.lineTo(0,-45)
+					ctx1.lineWidth="3"
+					ctx1.stroke();
+					ctx1.closePath();
+					ctx1.restore()
+//					requestAnimationFrame(clock)
+				}
+		setInterval(clock,500)
+//		requestAnimationFrame(clock)
+		</script>
+	</body>
+</html>
